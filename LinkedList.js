@@ -111,7 +111,30 @@ const LinkedList = () => {
         process.stdout.write(`(${node.getValue()})\n`);
     }
 
-    return {append, prepend, size, getHead, getTail, at, pop, contains, find, toString};
+    const insertAt = (value, index) => {
+        let frontNode = at(index);
+        let behindNode = frontNode.getPrevNode();
+        if (frontNode === null)
+            throw "couldn't find the index";
+
+        let newNode = Node();
+        newNode.initialize(value, behindNode, frontNode);
+        behindNode.setNextNode(newNode);
+        frontNode.setPrevNode(newNode);
+    }
+    const removeAt = (index) => {
+        let nodeToRemove = at(index);
+        let behindNode = nodeToRemove.getPrevNode();
+        let frontNode = nodeToRemove.getNextNode();
+        if (nodeToRemove === null)
+            throw "couldn't find the index";
+
+
+        behindNode.setNextNode(frontNode);
+        frontNode.setPrevNode(behindNode);
+    }
+
+    return {append, prepend, size, getHead, getTail, at, pop, contains, find, toString, insertAt, removeAt};
 }
 
 const Node = () => {
@@ -160,26 +183,30 @@ const Node = () => {
     return {initialize, setNextNode, getNextNode, setPrevNode, getPrevNode, setValue, getValue, copyNode, printNode};
 }
 
-let linkedList = LinkedList();
-
-
-linkedList.append(1);
-linkedList.prepend(4);
-console.log("removed -> "+linkedList.pop().getValue());
-linkedList.append(1);
-linkedList.prepend(3);
-linkedList.append(2);  //linked list should be: [3,4,1,2]
-console.log( "list 1 to 4: " + 
-    linkedList.at(0).getValue(),
-    linkedList.at(1).getValue(),
-    linkedList.at(2).getValue(),
-    linkedList.at(3).getValue());
-console.log("size of the list: " + linkedList.size());
-if (linkedList.contains(3)) {
-    console.log("list contains 3");
-}
-if (!linkedList.contains(12)) {
-    console.log("list containsn't 12");
-}
-console.log("the value 1 is the index: " + linkedList.find(1));
-linkedList.toString();
+// let linkedList = LinkedList();
+// linkedList.append(1);
+// linkedList.prepend(4);
+// console.log("removed -> "+linkedList.pop().getValue());
+// linkedList.append(1);
+// linkedList.prepend(3);
+// linkedList.append(2);  //linked list should be: [3,4,1,2]
+// console.log( "list 1 to 4: " + 
+//     linkedList.at(0).getValue(),
+//     linkedList.at(1).getValue(),
+//     linkedList.at(2).getValue(),
+//     linkedList.at(3).getValue());
+// console.log("size of the list: " + linkedList.size());
+// if (linkedList.contains(3)) {
+//     console.log("list contains 3");
+// }
+// if (!linkedList.contains(12)) {
+//     console.log("list containsn't 12");
+// }
+// console.log("the value 1 is the index: " + linkedList.find(1));
+// linkedList.toString();
+// linkedList.insertAt("hello there", 2);
+// linkedList.toString();
+// linkedList.removeAt(2);
+// linkedList.toString();
+// linkedList.prepend(64);
+// linkedList.toString();
