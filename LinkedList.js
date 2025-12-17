@@ -36,8 +36,6 @@ const LinkedList = () => {
     const size = () => {
         let counter = 0;
         let node = head.getNextNode();
-        // console.log(head.getNextNode().getValue());
-        // console.log(head.getNextNode().getNextNode().getValue());
         while(node !== null && node.getNextNode() !== null) {
             node = node.getNextNode();
             counter++;
@@ -45,7 +43,75 @@ const LinkedList = () => {
         return counter;
     }
 
-    return {append, prepend, size};
+    const getHead = () => { //hehe
+        return head;
+    }
+
+    const getTail = () => {
+        return tail;
+    }
+
+    const at = (index) => {
+        let counter = 0;
+        let node = head.getNextNode();
+
+        while(node !== null && counter < index) {
+            node = node.getNextNode();
+            counter++;
+        }
+        return node;
+    }
+
+    const pop = () => {
+        if (head.getNextNode() === null)
+            return null;
+        else {
+            let lastNode = tail.getPrevNode();
+            lastNode.getPrevNode().setNextNode(tail);
+            tail.setPrevNode(lastNode.getPrevNode());
+            return lastNode;
+        }
+    }
+
+    const contains = (value) => {
+        let counter = 0;
+        let node = head.getNextNode();
+
+        while(node !== null && node.getNextNode() !== null) {
+            if (node.getValue() == value) {
+                return true;
+            }
+            node = node.getNextNode();
+            counter++;
+        }
+        return false;
+    }
+
+    const find = (value) => {
+        let counter = 0;
+        let node = head.getNextNode();
+
+        while(node !== null && node.getNextNode() !== null) {
+            if (node.getValue() == value) {
+                return counter;
+            }
+            node = node.getNextNode();
+            counter++;
+        }
+        return null;
+    }
+
+    const toString = () => {
+        let counter = size();
+        let node = head.getNextNode();
+        for (let i = 0; i < counter - 1; i++) {
+            process.stdout.write(`(${node.getValue()}) -> `);
+            node = node.getNextNode();
+        }
+        process.stdout.write(`(${node.getValue()})\n`);
+    }
+
+    return {append, prepend, size, getHead, getTail, at, pop, contains, find, toString};
 }
 
 const Node = () => {
@@ -96,12 +162,24 @@ const Node = () => {
 
 let linkedList = LinkedList();
 
-console.log(linkedList.size());
+
 linkedList.append(1);
-console.log(linkedList.size());
-linkedList.prepend(2);
-console.log(linkedList.size());
-linkedList.append(3);
-console.log(linkedList.size());
 linkedList.prepend(4);
-console.log(linkedList.size());
+console.log("removed -> "+linkedList.pop().getValue());
+linkedList.append(1);
+linkedList.prepend(3);
+linkedList.append(2);  //linked list should be: [3,4,1,2]
+console.log( "list 1 to 4: " + 
+    linkedList.at(0).getValue(),
+    linkedList.at(1).getValue(),
+    linkedList.at(2).getValue(),
+    linkedList.at(3).getValue());
+console.log("size of the list: " + linkedList.size());
+if (linkedList.contains(3)) {
+    console.log("list contains 3");
+}
+if (!linkedList.contains(12)) {
+    console.log("list containsn't 12");
+}
+console.log("the value 1 is the index: " + linkedList.find(1));
+linkedList.toString();
